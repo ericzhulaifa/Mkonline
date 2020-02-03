@@ -55,3 +55,4 @@ To use this file recording what's the key steps to make this project going.
     4.6 To generate tales required by xadmin:
          $ manage.py@Mkonline> makemigration
          $ manage.py@Mkonline> migrate
+5. Register all Models in Xadmin in the backend system.
