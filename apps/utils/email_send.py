@@ -6,7 +6,7 @@ from random import Random
 
 from django.core.mail import send_mail
 
-from apps.users.models import EmailVerifyRecord
+from users.models import EmailVerifyRecord
 from Mkonline.settings import EMAIL_FROM
 
 

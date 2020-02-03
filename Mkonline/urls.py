@@ -21,9 +21,8 @@ from django.views.generic import TemplateView
 
 import xadmin
 
-from users.views import LoginView, ForgetPWdView
-
-# from users.views import LoginView, RegisterView, ActiveUserView, ForgetPWdView, ResetPwdView, ModifyPwdView
+from users.views import LoginView, ForgetPWdView, RegisterView, ActiveUserView, ResetPwdView, ModifyPwdView
+# from users.views import
 # from organization.views import OrgView
 
 
@@ -34,12 +33,13 @@ urlpatterns = [
     path('captcha/', include('captcha.urls')),
 
     # User Register process control:
+    path('', TemplateView.as_view(template_name='index.html'), name="index"),
     path('login/', LoginView.as_view(), name="login"),
-    # path('register/', RegisterView.as_view(), name="register"),
-    # path('active/<str:active_code>', ActiveUserView.as_view(), name="user_active"),
+    path('register/', RegisterView.as_view(), name="register"),
+    path('active/<str:active_code>', ActiveUserView.as_view(), name="user_active"),
     path('forgetpwd/', ForgetPWdView.as_view(), name="forget_pwd"),
-    # path('reset/<str:reset_code>', ResetPwdView.as_view(), name="reset_pwd"),
-    # path('modifypwd/', ModifyPwdView.as_view(), name="modify_pwd"),
+    path('reset/<str:reset_code>', ResetPwdView.as_view(), name="reset_pwd"),
+    path('modifypwd/', ModifyPwdView.as_view(), name="modify_pwd"),
 
     # 课程机构首页
     # path('org_list/', OrgView.as_view(), name="org_list"),
