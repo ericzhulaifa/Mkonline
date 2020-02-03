@@ -36,3 +36,9 @@ To use this file recording what's the key steps to make this project going.
     2.2 To modify the basic user to extend Xadmin later.
         $ pip install Pillow
 
+3. Apps model design # Following the Foreign Key implied principle.
+    3.1 Users,
+    3.2 Organization
+    3.3 Courses
+    3.4 Operations.
+
