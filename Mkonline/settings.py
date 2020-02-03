@@ -44,9 +44,9 @@ INSTALLED_APPS = [
     'operations.apps.OperationConfig',
 
     'crispy_forms',
-    # 'DjangoUeditor'
-    'xadmin.apps.XAdminConfig'  # Can't put before last four apps...
-    # 'DjangoUeditor'
+    'DjangoUeditor',
+    'xadmin.apps.XAdminConfig',
+    'captcha',
 ]
 
 AUTH_USER_MODEL = "users.UserProfile"
