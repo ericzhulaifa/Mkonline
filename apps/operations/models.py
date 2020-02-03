@@ -17,10 +17,11 @@ from django.contrib.auth import get_user_model    # 由于我们从新定义了U
                                                   # 这个方法可以自动获取user的信息。
 from users.models import BaseModel
 from apps.courses.models import Course
+from users.models import UserProfile
 
 # Create your models here.
 
-UserProfile = get_user_model()                     # 实例话这个方法
+# User_Profile = get_user_model()                     # 实例话这个方法
 
 
 class UserAsk(BaseModel):

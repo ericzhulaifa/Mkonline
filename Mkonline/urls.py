@@ -1,3 +1,4 @@
+# _*_ encoding:utf-8 _*_
 """Mkonline URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -14,9 +15,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 # from django.contrib import admin
+
 from django.urls import include, path
+from django.views.generic import TemplateView
 
 import xadmin
+
+from users.views import LoginView, ForgetPWdView
+
+# from users.views import LoginView, RegisterView, ActiveUserView, ForgetPWdView, ResetPwdView, ModifyPwdView
+# from organization.views import OrgView
+
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
@@ -25,10 +34,10 @@ urlpatterns = [
     path('captcha/', include('captcha.urls')),
 
     # User Register process control:
-    # path('login/', LoginView.as_view(), name="login"),
+    path('login/', LoginView.as_view(), name="login"),
     # path('register/', RegisterView.as_view(), name="register"),
     # path('active/<str:active_code>', ActiveUserView.as_view(), name="user_active"),
-    # path('forgetpwd/', ForgetPWdView.as_view(), name="forget_pwd"),
+    path('forgetpwd/', ForgetPWdView.as_view(), name="forget_pwd"),
     # path('reset/<str:reset_code>', ResetPwdView.as_view(), name="reset_pwd"),
     # path('modifypwd/', ModifyPwdView.as_view(), name="modify_pwd"),
 
