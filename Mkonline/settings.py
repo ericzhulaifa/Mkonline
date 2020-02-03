@@ -42,6 +42,11 @@ INSTALLED_APPS = [
     'organization.apps.OrganizationConfig',
     'courses.apps.CoursesConfig',
     'operations.apps.OperationConfig',
+
+    'crispy_forms',
+    # 'DjangoUeditor'
+    'xadmin.apps.XAdminConfig'  # Can't put before last four apps...
+    # 'DjangoUeditor'
 ]
 
 AUTH_USER_MODEL = "users.UserProfile"

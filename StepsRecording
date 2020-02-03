@@ -42,3 +42,16 @@ To use this file recording what's the key steps to make this project going.
     3.3 Courses
     3.4 Operations.
 
+4. Configure Xadmin  and DjangoUeditor tools
+    4.1 Copy Xadmin source code into project root folder, not subfolder and follow up the recommended setup.
+        read xadmin的配置.txt file.
+    4.2. Install related packages under project virtual environment, in xadmin folder, run:
+        $ Pip3 install -r requirements.txt
+    4.3 put 'xadmin' into setting - INSTALLED APPS, after installed apps, not before...
+    4.4.Copy UEditorField source code into the project root folder, not subfolder since it's required by xadmin.
+        add 'DjangoUeditor' in INSTALLED APPS setting.
+    4.5 following Bobby's 安装和配置 file to complete the setup.
+        4.5.1 copy bobby's ueditor.py into xdamin.plugins folder, add 'ueditor' into PLUGIN set in plugins.__init__.py.
+    4.6 To generate tales required by xadmin:
+         $ manage.py@Mkonline> makemigration
+         $ manage.py@Mkonline> migrate

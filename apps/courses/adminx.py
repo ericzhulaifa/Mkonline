@@ -3,6 +3,8 @@ __author__ = 'Eric Zhu'
 __date__ = '2020/2/1 5:34 下午'
 
 import xadmin
+
+
 #
 # from apps.courses.models import Course, Lesson, Video, CourseResource
 #
