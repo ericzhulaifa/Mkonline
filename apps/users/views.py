@@ -1,14 +1,30 @@
 from django.shortcuts import render
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
 from django.views.generic.base import View
 from django.contrib.auth.hashers import make_password
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from users.models import UserProfile, EmailVerifyRecord
-from .forms import LoginForm, ForgetPwdForm, RegisterForm, ModifyPwdForm
+from .forms import LoginForm, ForgetPwdForm, RegisterForm, ModifyPwdForm, DynamicLoginForm
 from utils.email_send import send_register_email
 # Create your views here.
+
+
+class UserInfoView(LoginRequiredMixin, View):
+    login_url = "/login"
+
+    def get(self, request, *args, **kwargs):
+        return render(request, "usercenter-info.html")
+
+
+class LogoutView(View):
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        return HttpResponseRedirect(reverse("index"))
 
 
 class ResetPwdView(View):
@@ -114,22 +130,26 @@ class LoginView(View):
     """
     登录功能开发 - 可以进一步完善 1/31/2020 Eric
     """
-    def get(self, request):
-        return render(request, "login.html", {})
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return HttpResponseRedirect(reverse("index"))
+        login_form = DynamicLoginForm()
+        return render(request, "login.html", {"login_form": login_form})
+        # return render(request, "login-old.html", {"login_form": login_form})
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         login_form = LoginForm(request.POST)    # 是Dict字典类型
         if login_form.is_valid():
-            user_name = request.POST.get("username", "")
-            pass_word = request.POST.get("password", "")
+            user_name = login_form.cleaned_data["username"]
+            pass_word = login_form.cleaned_data["password"]
             user = authenticate(username=user_name, password=pass_word)
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return render(request, "index.html")
+                    return HttpResponseRedirect(reverse("index"))
                 else:
                     return render(request, 'login.html', {"msg": "用户未激活！"})
             else:
-                return render(request, 'login.html', {"msg": "用户名或密码错误！"})
+                return render(request, 'login.html', {"msg": "用户名或密码错误！", "long_form": login_form})
         else:
             return render(request, 'login.html', {"login_form": login_form})

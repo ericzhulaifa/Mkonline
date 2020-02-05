@@ -69,8 +69,8 @@
             <p class="fl hd-tips">慕学在线，在线学习平台！</p>
             <ul class="fr hd-bar">
                 <li>服务电话：<span>4001008031</span></li>
-                <li><a href="/login/">[登录]</a></li>
-                <li class="active"><a href="/register/">[注册]</a></li>
+                <!-- <li><a href="/login/">[登录]</a></li> -->
+                <!-- <li class="active"><a href="/register/">[注册]</a></li> -->
             </ul>
         </div>
     </div>
@@ -144,7 +144,7 @@
                             <input type="password" id="id_password" name="password"  value="{{ register_form.password.value }}" placeholder="请输入6-20位非中文字符密码" />
                         </div>
                         <div class="form-group marb8 captcha1 {% if register_form.errors.captcha %}errorput{% endif %}">
-                            <label>认&nbsp;证&nbsp;码</label>
+                            <label>验&nbsp;证&nbsp;码</label>
                             {{ register_form.captcha }}
                         </div>
                         <div class="error btns" id="jsEmailTips">
@@ -155,7 +155,7 @@
                     {% csrf_token %}
                     </form>
                 </div>
-                <p class="form-p">已有账号？<a href="login.html">[立即登录]</a></p>
+                <p class="form-p">已有账号？<a href="{% url 'login' %}">[立即登录]</a></p>
             </div>
         </div>
     </div>

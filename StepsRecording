@@ -57,9 +57,9 @@ To use this file recording what's the key steps to make this project going.
          $ manage.py@Mkonline> migrate
 5. Register all Models in Xadmin in the backend system
 
-6. FrondEndDesign - User Register. Starting from Project urls.py setting.
-    6.1 loading all static files into project root folder.
-    6.2 Put html files into templates folder.
+6. FrontEndDesign - User Register. Starting from Project urls.py setting.
+    6.1 load all static files from project sources files into project root folder.
+    6.2 put related pages html files into templates folder.
     6.3 install django-simple-captcha.
         6.3.1 Download captcha in your project root folder using pip by running:
             $ pip3 install django-simple-captcha
@@ -68,4 +68,7 @@ To use this file recording what's the key steps to make this project going.
             $ python manage.py migrate
         6.3.4 add the following urls your urls.py
             path('captcha/', include('captcha.urls')),
+     6.4 Recover old design pages in users app...
+7. FrontEndDesign = Organization
+    7.1
 

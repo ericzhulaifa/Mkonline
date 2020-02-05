@@ -135,13 +135,14 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = (
+STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
-)
+    os.path.join(BASE_DIR, 'apps/message_form/static'),
+]
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = "smtp.sina.com"
 EMAIL_PORT = 25
 EMAIL_HOST_USER = "coachingabc@sina.com"
-EMAIL_HOST_PASSWORD = "2934bf8bf0e30c05"
+EMAIL_HOST_PASSWORD = "a3cbe6ed087fb507"
 EMAIL_FROM = "coachingabc@sina.com"
