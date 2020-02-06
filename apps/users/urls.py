@@ -9,6 +9,7 @@ from . import views
 app_name = 'users'
 urlpatterns = [
     path('info/', views.UserInfoView.as_view(), name='user_info'),
+    path('image/upload/', views.UploadImageView.as_view(), name='image_upload'),
     # # ex: /polls/5/
     # path('<int:pk>/', views.DetailView.as_view(), name='detail'),
     # # ex: /polls/5/results/

@@ -4,14 +4,32 @@ from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
 from django.views.generic.base import View
 from django.contrib.auth.hashers import make_password
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from users.models import UserProfile, EmailVerifyRecord
-from .forms import LoginForm, ForgetPwdForm, RegisterForm, ModifyPwdForm, DynamicLoginForm
+from .forms import LoginForm, ForgetPwdForm, RegisterForm, ModifyPwdForm, DynamicLoginForm, UploadImageForm
 from utils.email_send import send_register_email
 # Create your views here.
+
+
+class UploadImageView(LoginRequiredMixin, View):
+    login_url = "/login"
+
+    def post(self, request, *args, **kwargs):
+        # 处理用户上传的头像
+        image_form = UploadImageForm(request.POST, request.FILES, isinstance=request.user)
+        if image_form.is_valid():
+            image_form.save()
+            return JsonResponse({
+                "status": "success"
+            })
+        else:
+            return JsonResponse({
+                "status": "fail"
+            })
+        pass
 
 
 class UserInfoView(LoginRequiredMixin, View):

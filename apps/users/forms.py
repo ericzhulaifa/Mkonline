@@ -6,6 +6,14 @@ __date__ = '2020/1/30 9:27 下午'
 from django import forms
 from captcha.fields import CaptchaField
 
+from users.models import UserProfile
+
+
+class UploadImageForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ["image"]
+
 
 class DynamicLoginForm(forms.Form):
     captcha = CaptchaField(error_messages={"invalid": u"验证码错误！"})
