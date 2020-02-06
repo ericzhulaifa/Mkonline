@@ -8,5 +8,5 @@ class OrgView(View):
     """
     课程机构列表功能
     """
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         return render(request, "org-list.html", {})

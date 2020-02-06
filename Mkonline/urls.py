@@ -22,8 +22,7 @@ from django.views.generic import TemplateView
 import xadmin
 
 from users.views import LoginView, LogoutView, ForgetPWdView, RegisterView, ActiveUserView, ResetPwdView, ModifyPwdView
-# from users.views import
-# from organization.views import OrgView
+from organization.views import OrgView
 
 
 urlpatterns = [
@@ -43,7 +42,7 @@ urlpatterns = [
     path('modifypwd/', ModifyPwdView.as_view(), name="modify_pwd"),
 
     # 课程机构首页
-    # path('org_list/', OrgView.as_view(), name="org_list"),
+    path('org_list/', OrgView.as_view(), name="org_list"),
 
     # 用户个人中心
     path('users/', include('users.urls')),
