@@ -37,7 +37,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'users.apps.UsersConfig',
+    'organization.apps.OrganizationConfig',
+    'courses.apps.CoursesConfig',
+    'operations.apps.OperationConfig',
+
+    'crispy_forms',
+    'DjangoUeditor',
+    'xadmin.apps.XAdminConfig',
+    'captcha',
 ]
+
+AUTH_USER_MODEL = "users.UserProfile"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -122,3 +134,15 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, 'apps/message_form/static'),
+]
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = "smtp.sina.com"
+EMAIL_PORT = 25
+EMAIL_HOST_USER = "coachingabc@sina.com"
+EMAIL_HOST_PASSWORD = "a3cbe6ed087fb507"
+EMAIL_FROM = "coachingabc@sina.com"
