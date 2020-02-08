@@ -18,11 +18,12 @@
 <section class="headerwrap ">
     <header>
 		<div  class=" header">
+            <div class="fl"><p>服务电话：<b>33333333</b></p></div>
+					<!--登录后跳转-->
+
             {% if request.user.is_authenticated %}
                     <div class="top">
 				<div class="wp">
-					<div class="fl"><p>服务电话：<b>33333333</b></p></div>
-					<!--登录后跳转-->
 						<div class="personal">
                             <dl class="user fr">
                                 <dd>{% if user.nick_name %}{{ user.nick_name }}{% else %}{{ user.name }}{% endif %}<img class="down fr" src="{% static 'images/top_down.png' %}"/></dd>
