@@ -47,10 +47,14 @@ urlpatterns = [
     path('reset/<str:reset_code>', ResetPwdView.as_view(), name="reset_pwd"),
     path('modifypwd/', ModifyPwdView.as_view(), name="modify_pwd"),
 
-    # 课程机构首页
+    # 机构相关页面
     path('org/', include('organization.urls', namespace='org')),
+
+    # 用户操作相关页面
+    path('op/', include('operations.urls', namespace='op')),
 
     # 用户个人中心
     path('users/', include('users.urls')),
+
 
 ]
