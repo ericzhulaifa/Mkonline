@@ -1,6 +1,7 @@
 # _*_ encoding:utf-8 _*_
 from django.shortcuts import render
 from django.views.generic import View
+from django.http import JsonResponse
 
 from pure_pagination import Paginator, PageNotAnInteger
 
@@ -17,10 +18,15 @@ class AddAskView(View):
     def post(self, request, *args, **kwargs):
         userask_form = AddAskForm(request.POST)
         if userask_form.is_valid():
-            user_ask = userask_form.save(commit=True)
-
+            userask_form.save(commit=True)
+            return JsonResponse({
+                "status": "success"
+            })
         else:
-            pass
+            return JsonResponse({
+                "status": "fail",
+                "msg": "添加出错"
+            })
 
 
 class OrgView(View):
