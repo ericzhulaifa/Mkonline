@@ -1,0 +1,7 @@
+Required packages:
+    django ==2.2
+    mysqlclient
+    pillow
+    xadmin
+    DjangoUeditor
+    django-pure-pagination

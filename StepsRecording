@@ -70,5 +70,9 @@ To use this file recording what's the key steps to make this project going.
             path('captcha/', include('captcha.urls')),
      6.4 Recover old design pages in users app...
 7. FrontEndDesign = Organization
-    7.1
+    7.1 use external package - django-pure-pagination for displaying information in pages.
+        $pip3 install django-pure-pagination
+        https://github.com/jamespacileo/django-pure-pagination
+
+
 

@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'DjangoUeditor',
     'xadmin.apps.XAdminConfig',
     'captcha',
+    'pure_pagination',
 ]
 
 AUTH_USER_MODEL = "users.UserProfile"
@@ -75,6 +76,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -146,3 +148,14 @@ EMAIL_PORT = 25
 EMAIL_HOST_USER = "coachingabc@sina.com"
 EMAIL_HOST_PASSWORD = "a3cbe6ed087fb507"
 EMAIL_FROM = "coachingabc@sina.com"
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# 分页功能django-pure-pagination相关设置
+PAGINATION_SETTINGS = {
+    'PAGE_RANGE_DISPLAYED': 10,
+    'MARGIN_PAGES_DISPLAYED': 2,
+
+    'SHOW_FIRST_PAGE_WHEN_INVALID': True,
+}

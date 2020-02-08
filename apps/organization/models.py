@@ -51,7 +51,16 @@ class CourseOrg(BaseModel):
     address = models.CharField(max_length=150, verbose_name=u"机构地址")
     students = models.IntegerField(default=0, verbose_name=u"学习人数")
     course_nums = models.IntegerField(default=0, verbose_name=u"课程数")
+
+    is_auth = models.BooleanField(default=False, verbose_name=u"是否认证")
+    is_gold = models.BooleanField(default=False, verbose_name=u"是否金牌")
+
     city = models.ForeignKey(CityDict, on_delete=models.CASCADE, verbose_name=u"所在城市")
+
+    # 因为courses的一个外键是CourseOrg,所以可以反向去到courses的数据
+    def courses(self):
+        courses = self.course_set.filter(is_classics=True)[:3]
+        return courses
 
     class Meta:
         verbose_name = u"课程机构"

@@ -15,14 +15,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 # from django.contrib import admin
-
-from django.urls import include, path
+# from django.conf.urls import url
+from django.urls import include, path, re_path
 from django.views.generic import TemplateView
+from django.views.static import serve
 
 import xadmin
 
 from users.views import LoginView, LogoutView, ForgetPWdView, RegisterView, ActiveUserView, ResetPwdView, ModifyPwdView
 from organization.views import OrgView
+from Mkonline.settings import MEDIA_ROOT
 
 
 urlpatterns = [
@@ -30,6 +32,10 @@ urlpatterns = [
     path('xadmin/', xadmin.site.urls),
     path('ueditor/', include('DjangoUeditor.urls')),    # required by ueditor
     path('captcha/', include('captcha.urls')),
+
+    # 配置上传文件的URL访问路径
+    # url(r'^media/(?P<path>.*)$', serve, {"document_root": MEDIA_ROOT}),
+    re_path(r'^media/(?P<path>.*)$', serve, {"document_root": MEDIA_ROOT}),
 
     # User Register  process control:
     path('', TemplateView.as_view(template_name='index.html'), name="index"),
@@ -42,7 +48,7 @@ urlpatterns = [
     path('modifypwd/', ModifyPwdView.as_view(), name="modify_pwd"),
 
     # 课程机构首页
-    path('org_list/', OrgView.as_view(), name="org_list"),
+    path('org/', include('apps.organization.urls', namespace="org")),
 
     # 用户个人中心
     path('users/', include('users.urls')),
