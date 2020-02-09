@@ -48,9 +48,22 @@ class AddFavView(View):
             else:
                 user_fav = UserFavorite()
                 user_fav.fav_id = fav_id
-                # why not have fav_type?
+                user_fav.fav_type = fav_type  # 需要会写这个参数，否则为默认值1，而不是正确的2
                 user_fav.user = request.user
                 user_fav.save()
+                # 收藏的时候， 需要回写收藏数加1
+                if fav_type == 1:
+                    course = Course.objects.get(id=fav_id)
+                    course.fav_nums += 1
+                    course.save()
+                elif fav_type == 2:
+                    course_org = CourseOrg.objects.get(id=fav_id)
+                    course_org.fav_nums += 1
+                    course_org.save()
+                elif fav_type == 3:
+                    teacher = Teacher.objects.get(id=fav_id)
+                    teacher.fav_nums += 1
+                    teacher.save()
 
                 return JsonResponse({
                     "status": "success",
