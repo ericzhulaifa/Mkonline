@@ -24,15 +24,15 @@ class AddFavView(View):
             fav_type = user_fav_form.cleaned_data["fav_type"]
 
             # 判断是否已收藏
-            existed_records = UserFavorite.objects.filter(user=request.user, fav_id=fav_id, fav_type=fav_type)
-            if existed_records:
-                existed_records.delete()
+            exist_records = UserFavorite.objects.filter(user=request.user, fav_id=fav_id, fav_type=fav_type)
+            if exist_records:
+                exist_records.delete()
 
                 if fav_type == 1:
                     course = Course.objects.get(id=fav_id)
                     course.fav_nums -= 1
                     course.save()
-                elif fav_type ==2:
+                elif fav_type == 2:
                     course_org = CourseOrg.objects.get(id=fav_id)
                     course_org.fav_nums -= 1
                     course_org.save()
@@ -48,6 +48,7 @@ class AddFavView(View):
             else:
                 user_fav = UserFavorite()
                 user_fav.fav_id = fav_id
+                # why not have fav_type?
                 user_fav.user = request.user
                 user_fav.save()
 

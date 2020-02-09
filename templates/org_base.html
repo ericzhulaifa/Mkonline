@@ -78,10 +78,10 @@
                     <img src="{% static 'images/gold.png' %}"/>
                     {% endif %}
                 </h1>
+
                 <p class="fl">
-                    <span class="fl" style="margin-top:8px;color:#848484;">推荐指数： </span>
-                    <span class="precision company-credit" data-star-scope="5.0"></span>
-                    <span class="key">5.0</span>
+                        <span class="fl" style="margin-top:8px;color:#848484;">推荐指数： </span>
+                        <span class="precision company-credit" data-star-scope="{{ course_org.recom_stars }}"></span>
                 </p>
             </div>
             <div class="btn fr collectionbtn  notlogin

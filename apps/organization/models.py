@@ -36,6 +36,15 @@ CATEGORY_CHOICES = (
     ("gr", "个人"),
 )
 
+RECOM_STARS = (
+    (0, "0"),
+    (1, "*"),
+    (2, "**"),
+    (3, "***"),
+    (4, "****"),
+    (5, "*****"),
+)
+
 
 class CourseOrg(BaseModel):
     """
@@ -54,6 +63,8 @@ class CourseOrg(BaseModel):
 
     is_auth = models.BooleanField(default=False, verbose_name=u"是否认证")
     is_gold = models.BooleanField(default=False, verbose_name=u"是否金牌")
+
+    recom_stars = models.IntegerField(default=0, choices=RECOM_STARS, verbose_name=u"推荐指数")
 
     city = models.ForeignKey(CityDict, on_delete=models.CASCADE, verbose_name=u"所在城市")
 
