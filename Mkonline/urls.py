@@ -50,6 +50,9 @@ urlpatterns = [
     # 机构相关页面
     path('org/', include('organization.urls', namespace='org')),
 
+    # 课程相关页面
+    path('course/', include('courses.urls', namespace='courses')),
+
     # 用户操作相关页面
     path('op/', include('operations.urls', namespace='op')),
 
