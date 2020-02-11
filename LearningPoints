@@ -1,3 +1,25 @@
 How To:
 1. 如何在template中进行循环套用数据引用？
     course-video.html line：76-93 "Course - Lesson - Video" 的套用循环引用
+
+2. 如何对view进行login登录的验证？
+    https://docs.djangoproject.com/en/3.0/topics/auth/default/
+
+3. # 登录成功之后应该怎么返回页面呢?
+    3.1 在loginView的Get方法里先获取传入的跳转地址，并将它返回给页面 line 154， 158 users/views.py
+
+        next = request.GET.get("next", "")
+        return render(request, "login.html", {
+            "next": next,
+            })
+    3.2 在login的页面中， login.html line 73， 将从GET发法中获取的地址传递给POST方法；
+         <form class="tab-form" id="mobile_register_form" action="{% url 'login' %}?next={{ next }}" method="post" autocomplete="off"
+    3.3 在loginView的POST方法中，获取到跳转的URL，然后在调用显示页面 users/views.py line: 171
+                    next = request.GET.get("next", "")
+                    if next:
+                        return HttpResponseRedirect(next)
+
+4. 视屏播放 Video.JS
+    using https://videojs.com/ to design:
+    course-video.html
+

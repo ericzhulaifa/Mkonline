@@ -70,7 +70,7 @@
                     <h2 class="active">账号登录</h2>
                     <h2 >动态登录</h2>
                 </div>
-                <form class="tab-form" id="mobile_register_form" action="{% url 'login' %}" method="post" autocomplete="off" id="form1">
+                <form class="tab-form" id="mobile_register_form" action="{% url 'login' %}?next={{ next }}" method="post" autocomplete="off" id="form1">
                     <div class="form-group marb20 {% if login_form.errors.username %}errorput{% endif %}">
                         <input name="username" id="account_l" value="{{ login_form.username.value }}" type="text" placeholder="手机号/邮箱" />
                     </div>

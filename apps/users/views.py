@@ -151,9 +151,12 @@ class LoginView(View):
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return HttpResponseRedirect(reverse("index"))
+        next = request.GET.get("next", "")
         login_form = DynamicLoginForm()
-        return render(request, "login.html", {"login_form": login_form})
-        # return render(request, "login-old.html", {"login_form": login_form})
+        return render(request, "login.html", {
+            "login_form": login_form,
+            "next": next,
+            })
 
     def post(self, request, *args, **kwargs):
         login_form = LoginForm(request.POST)    # 是Dict字典类型
@@ -164,6 +167,10 @@ class LoginView(View):
             if user is not None:
                 if user.is_active:
                     login(request, user)
+                    # 登录成功之后应该怎么返回页面呢？
+                    next = request.GET.get("next", "")
+                    if next:
+                        return HttpResponseRedirect(next)
                     return HttpResponseRedirect(reverse("index"))
                 else:
                     return render(request, 'login.html', {"msg": "用户未激活！"})

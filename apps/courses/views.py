@@ -1,13 +1,57 @@
 from django.shortcuts import render
 from django.views.generic.base import View
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from pure_pagination import Paginator, PageNotAnInteger
 
-from apps.courses.models import Course, CourseTag, Lesson, Video
-from apps.operations.models import UserFavorite
+from apps.courses.models import Course, CourseTag, CourseResource, Video
+from apps.operations.models import UserFavorite, UserCourses, CourseComments
 
 
-class CourseLessonView(View):
+class CourseVideoView(LoginRequiredMixin, View):
+    login_url = '/login/'
+
+    def get(self, request, course_id, video_id, *args, **kwargs):
+        """
+        获取课程详情
+        """
+        course_detail = Course.objects.get(id=int(course_id))
+        course_detail.click_nums += 1
+        course_detail.save()
+
+        course_video = Video.objects.get(id=int(video_id))
+
+        # 查询用户是否已经关联了该课程
+        user_courses = UserCourses.objects.filter(user=request.user, course=course_detail)
+        if not user_courses:
+            user_course = UserCourses(user=request.user, course=course_detail)
+            user_course.save()
+
+            course_detail.students += 1
+            course_detail.save()
+
+        # 学习过该课程的所有同学
+        user_courses = UserCourses.objects.filter(course=course_detail)
+        user_ids = [user_course.user.id for user_course in user_courses]
+        all_courses = UserCourses.objects.filter(user_id__in=user_ids).order_by("-course__click_nums")[:5]
+        # related_courses = [user_course.course  for user_course in all_courses if user_course.id != course_detail.id]
+        related_courses = []
+        for item in all_courses:
+            if item.course.id != course_detail.id:
+                related_courses.append(item.course)
+
+        course_resources = CourseResource.objects.filter(course=course_detail)
+
+        return render(request, 'courses/course-play.html', {
+            "course_detail": course_detail,
+            "course_resources": course_resources,
+            "related_courses": related_courses,
+            "course_video": course_video,
+        })
+
+
+class CourseCommentsView(LoginRequiredMixin, View):
+    login_url = '/login/'
     def get(self, request, course_id, *args, **kwargs):
         """
         获取课程详情
@@ -16,13 +60,72 @@ class CourseLessonView(View):
         course_detail.click_nums += 1
         course_detail.save()
 
-        # course_lesson = Lesson.objects.filter(course_id=int(course_id))
-        # all_videos = Video.objects.filter(lesson_id=int(course_lesson.id))
+        comments = CourseComments.objects.filter(course=course_detail)
+
+        # 查询用户是否已经关联了该课程
+        user_courses = UserCourses.objects.filter(user=request.user, course=course_detail)
+        if not user_courses:
+            user_course = UserCourses(user=request.user, course=course_detail)
+            user_course.save()
+
+            course_detail.students += 1
+            course_detail.save()
+
+        # 学习过该课程的所有同学
+        user_courses = UserCourses.objects.filter(course=course_detail)
+        user_ids = [user_course.user.id for user_course in user_courses]
+        all_courses = UserCourses.objects.filter(user_id__in=user_ids).order_by("-course__click_nums")[:5]
+        # related_courses = [user_course.course  for user_course in all_courses if user_course.id != course_detail.id]
+        related_courses = []
+        for item in all_courses:
+            if item.course.id != course_detail.id:
+                related_courses.append(item.course)
+
+        course_resources = CourseResource.objects.filter(course=course_detail)
+
+        return render(request, 'courses/course-comment.html', {
+            "course_detail": course_detail,
+            "course_resources": course_resources,
+            "related_courses": related_courses,
+            "comments": comments,
+        })
+
+
+class CourseLessonView(LoginRequiredMixin, View):
+    login_url = '/login/'
+    def get(self, request, course_id, *args, **kwargs):
+        """
+        获取课程详情
+        """
+        course_detail = Course.objects.get(id=int(course_id))
+        course_detail.click_nums += 1
+        course_detail.save()
+
+        # 查询用户是否已经关联了该课程
+        user_courses = UserCourses.objects.filter(user=request.user, course=course_detail)
+        if not user_courses:
+            user_course = UserCourses(user=request.user, course=course_detail)
+            user_course.save()
+
+            course_detail.students += 1
+            course_detail.save()
+
+        # 学习过该课程的所有同学
+        user_courses = UserCourses.objects.filter(course=course_detail)
+        user_ids = [user_course.user.id for user_course in user_courses]
+        all_courses = UserCourses.objects.filter(user_id__in=user_ids).order_by("-course__click_nums")[:5]
+        # related_courses = [user_course.course  for user_course in all_courses if user_course.id != course_detail.id]
+        related_courses = []
+        for item in all_courses:
+            if item.course.id != course_detail.id:
+                related_courses.append(item.course)
+
+        course_resources = CourseResource.objects.filter(course=course_detail)
 
         return render(request, 'courses/course-video.html', {
             "course_detail": course_detail,
-            # "course_lesson": course_lesson,
-            # "all_videos": all_videos,
+            "course_resources": course_resources,
+            "related_courses": related_courses,
         })
 
 
