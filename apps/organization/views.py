@@ -5,9 +5,69 @@ from django.http import JsonResponse
 
 from pure_pagination import Paginator, PageNotAnInteger
 
-from apps.organization.models import CourseOrg, CityDict
+from apps.organization.models import CourseOrg, CityDict, Teacher
 from apps.organization.forms import AddAskForm
 from apps.operations.models import UserFavorite
+from apps.courses.models import Course
+
+
+class TeacherDetailView(View):
+    def get(self, request, teacher_id, *args, **kwargs):
+        teacher_detail = Teacher.objects.get(id=int(teacher_id))
+        hot_teachers = Teacher.objects.all().order_by("-click_nums")[:5]
+        all_courses = Course.objects.filter(teacher_id=teacher_detail.id)
+
+        has_fav_teacher = False
+        has_fav_org = False
+        if request.user.is_authenticated:
+            if UserFavorite.objects.filter(user=request.user, fav_id=teacher_id, fav_type='3'):
+                has_fav_teacher = True
+
+            if UserFavorite.objects.filter(user=request.user, fav_id=teacher_detail.org.id, fav_type='2'):
+                has_fav_org = True
+
+        # 对课程数据进行分页
+        try:
+            page = request.GET.get('page', 1)
+        except PageNotAnInteger:
+            page = 1
+
+        p = Paginator(all_courses, per_page=3, request=request)
+        all_courses = p.page(page)
+
+        return render(request, "organization/teacher-detail.html", {
+            "teacher_detail": teacher_detail,
+            "all_courses": all_courses,
+            "teacher_id": teacher_id,
+            "hot_teachers": hot_teachers,
+            "has_fav_teacher": has_fav_teacher,
+            "has_fav_org": has_fav_org,
+        })
+
+
+class TeachersView(View):
+    def get(self, request, *args, **kwargs):
+        all_teachers = Teacher.objects.all()
+        hot_teachers = Teacher.objects.all().order_by("-click_nums")[:3]
+
+        sort = request.GET.get("sort", "")
+        if sort == "hot":
+            all_teachers = all_teachers.order_by("-click_nums")
+
+        # 对教师数据进行分页
+        try:
+            page = request.GET.get('page', 1)
+        except PageNotAnInteger:
+            page = 1
+
+        p = Paginator(all_teachers, per_page=2, request=request)
+        teachers = p.page(page)
+
+        return render(request, "organization/teachers-list.html", {
+            "teachers": teachers,
+            "sort": sort,
+            "hot_teachers": hot_teachers
+        })
 
 
 class OrgDescView(View):

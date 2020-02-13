@@ -23,3 +23,25 @@ How To:
     using https://videojs.com/ to design:
     course-video.html
 
+5. 收藏功能的开发
+    5.1 建立可以调用收藏功能的URL operations.urls.py;
+        path('fav/', AddFavView.as_view(), name='fav'),
+    5.2 编写调用URL对应的数据处理逻辑
+        operations.views.py - class AddFavView(View)
+    5.3 使用ModelForM的方式将后台数据封装
+        operations.forms.py - class UserFavForm(forms.ModelForm)
+    5.4 在前台页面中调用js函数进行功能处理
+        org_base.html
+        teacher-detail.html
+    5.5 在前台页面对应的View开发中判断当前是否收藏状态，进行数据处理和沟通
+
+6. 分享功能开发
+    讲师详情页面- teacher-detail.html
+
+7. 如何在显示排名榜时，让其排名序号自动加一？
+    forloop.counter的功能
+    teacher-detail.html
+    {% for hot_teacher in hot_teachers %}
+       <dl class="des">
+       <span class="num fl">{{ forloop.counter }}</span>
+

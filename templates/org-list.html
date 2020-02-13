@@ -85,7 +85,7 @@
                             <li class="pic10" style="padding-left:18px;">经典课程：
                                 {% if org.courses %}
                                     {% for course in org.courses %}
-                                        <a href="/diary/19/">{{ course.name }}</a>
+                                        <a href="{% url 'org:course' course.id %}">{{ course.name }}</a>
                                     {% endfor %}
                                 {% else %}
                                     无
@@ -125,6 +125,7 @@
 
 		</div>
 	</div>
+
 	<div class="right companyright">
 			<div class="head">我要学习</div>
 			<form class="rightform" id="jsStayForm">
@@ -145,25 +146,22 @@
                 {% csrf_token %}
             </form>
 		</div>
-
-		<div class="right companyrank layout">
+        <div class="right companyrank layout">
 			<div class="head">授课机构排名</div>
 
             {% for hot_org in hot_orgs %}
                 <dl class="des">
                     <dt class="num fl">{{ forloop.counter }}</dt>
                     <dd>
-                        <a href="/company/2/"><h1>{{ hot_org.name }}</h1></a>
+                        <a href="{% url 'org:org_home' hot_org.id %}"><h1>{{ hot_org.name }}</h1></a>
                         <p>{{ hot_org.address }}</p>
                     </dd>
                 </dl>
 
             {% endfor %}
 
-
-
 		</div>
-        </div>
+    </div>
 </section>
 {% endblock %}
 
