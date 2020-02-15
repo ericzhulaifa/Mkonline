@@ -18,46 +18,38 @@
 <section class="headerwrap ">
     <header>
 		<div  class=" header">
- 			<div class="top">
+
+           <div class="top">
 				<div class="wp">
 					<div class="fl"><p>服务电话：<b>33333333</b></p></div>
 					<!--登录后跳转-->
-                    {% if request.user.is_authenticated %}
-                        <div class="top">
-				<div class="wp">
-						<div class="personal">
-                            <dl class="user fr">
-                                <dd>{% if user.nick_name %}{{ user.nick_name }}{% else %}{{ user.name }}{% endif %}<img class="down fr" src="{% static 'images/top_down.png' %}"/></dd>
-                                <dt><img width="20" height="20" src="{{ user.image.url }}"/></dt>
-                            </dl>
-                            <div class="userdetail">
-                            	<dl>
-	                                <dt><img width="80" height="80" src="{{ user.image.url }}"/></dt>
-	                                <dd>
-	                                    <p>{{ user.name }}</p>
-                                        <h2>{{ user.nick_name }}</h2>
-                                        <h2>{{ user.mobile }}</h2>
-                                        <h2>{{ user.email }}</h2>
-	                                </dd>
+						{% if user.is_authenticated %}
+                            <div class="personal">
+                                <dl class="user fr">
+                                    <dd>{% if user.nick_name %}{{ user.nick_name }}{% else %}{{ user.username }}{% endif %}<img class="down fr" src="{% static 'images/top_down.png' %}"/></dd>
+                                    <dt><img width="20" height="20" src="{{ user.image.url }}"/></dt>
                                 </dl>
-                                <div class="btn">
-	                                <a class="personcenter fl" href="{% url 'users:user_info' %}">进入个人中心</a>
-	                                <a class="fr" href={% url 'logout' %}>退出</a>
+                                <div class="userdetail">
+                                    <dl>
+                                        <dt><img width="80" height="80" src="{{ user.image.url }}"/></dt>
+                                        <dd>
+                                            <h2>{{ user.nick_name }}</h2>
+                                            <p>{{ user.username }}</p>
+                                        </dd>
+                                    </dl>
+                                    <div class="btn">
+                                        <a class="personcenter fl" href="{% url 'users:user_info' %}">进入个人中心</a>
+                                        <a class="fr" href="{% url 'logout' %}">退出</a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                </div>
-			</div>
-                    {% else %}
-                            <div class="top">
-				<div class="wp">
-					<div class="fl"><p>服务电话：<b>33333333</b></p></div>
-					<!--未登录前画面-->
-                        <a style="color:white" class="fr registerbtn" href="{% url 'register' %}">注册</a>
-                        <a style="color:white" class="fr loginbtn" href="{% url 'login' %}">登录</a>
-				</div>
-			</div>
-                    {% endif %}
+                            {% else %}
+                            <a style="color:white" class="fr registerbtn" href="{% url 'register' %}">注册</a>
+                            <a style="color:white" class="fr loginbtn" href="{% url 'login' %}">登录</a>
+                        {% endif %}
+                        <a href="{% url 'users:mymessages' %}">
+                            <div class="msg-num"><span id="MsgNum">{{ unread_nums }}</span></div>
+                        </a>
 				</div>
 			</div>
 
@@ -80,28 +72,25 @@
                     </div>
                 </div>
             </div>
-
-
 			<nav>
 				<div class="nav">
 					<div class="wp">
 						<ul>
-							<li class="{% if request.path == '/' %}active{% endif %}"><a href="{% url 'index' %}">首页</a></li>
-							<li class="{% if request.path|slice:'7' == '/course' %}active{% endif %}">
+							<li class="active" ><a href="{% url 'index' %}">首页</a></li>
+							<li >
 								<a href="{% url 'courses:list' %}">
 									公开课<img class="hot" src="{% static 'images/nav_hot.png' %}">
 								</a>
 							</li>
-							<li class="{% if request.path|slice:'6' == '/org/t' %}active{% endif %}">
+							<li >
 								<a href="{% url 'org:teachers' %}">授课教师</a>
 							</li>
-							<li class="{% if request.path|slice:'6' == '/org/l' %}active{% endif %}" ><a href="{% url 'org:list' %}">授课机构</a></li>
-						</ul>
+							<li ><a href="{% url 'org:list' %}">授课机构</a></li>
+                        </ul>
 					</div>
 				</div>
 			</nav>
-
-			</div>
+        </div>
     </header>
 </section>
 <!--crumbs start-->

@@ -83,7 +83,7 @@ class UserMessage(BaseModel):
     """
     4.4 UserMessage         用户消息
     """
-    user = models.IntegerField(default=0, verbose_name=u"用户")
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, verbose_name=u"用户")
     message = models.CharField(max_length=200, verbose_name=u"消息内容")
     has_read = models.BooleanField(default=False, verbose_name=u"是否已读")
 

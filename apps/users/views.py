@@ -8,23 +8,47 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from pure_pagination import Paginator, PageNotAnInteger
+
 from users.models import UserProfile, EmailVerifyRecord
 from .forms import LoginForm, ForgetPwdForm, RegisterForm, ModifyPwdForm, DynamicLoginForm, UploadImageForm
 from .forms import UserInfoForm, ChangePwdForm
 from utils.email_send import send_register_email
-from apps.operations.models import UserFavorite
+from apps.operations.models import UserFavorite, UserMessage
 from apps.organization.models import CourseOrg, Teacher
 from apps.courses.models import Course
+
+
+def message_nums(request):
+
+    if request.user.is_authenticated:
+        return {'unread_nums': request.user.usermessage_set.filter(has_read=False).count()}
+    else:
+        return {}
 
 
 class MyMessagesView(LoginRequiredMixin, View):
     login_url = "/login"
 
     def get(self, request, *args, **kwargs):
+        my_messages = UserMessage.objects.filter(user=request.user).order_by("-add_time")
         current_page = "mymessages"
+        for message in my_messages:
+            message.has_read = True
+            message.save()
+
+        # 对消息数据进行分页
+        try:
+            page = request.GET.get('page', 1)
+        except PageNotAnInteger:
+            page = 1
+
+        p = Paginator(my_messages, per_page=2, request=request)
+        messages = p.page(page)
 
         return render(request, "users/usercenter-message.html", {
             "current_page": current_page,
+            "my_messages": messages,
         })
 
 

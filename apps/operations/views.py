@@ -1,10 +1,17 @@
 from django.views.generic import View
 from django.http import JsonResponse
+from django.shortcuts import render
 
 from apps.operations.models import UserFavorite, CourseComments
 from apps.operations.forms import UserFavForm, CommentsForm
 from apps.courses.models import Course
 from apps.organization.models import CourseOrg, Teacher
+
+
+class IndexView(View):
+    def get(self, request, *args, **kwargs):
+
+        return render(request, "index.html")
 
 
 class CommentView(View):

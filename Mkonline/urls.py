@@ -23,8 +23,8 @@ from django.views.static import serve
 import xadmin
 
 from users.views import LoginView, LogoutView, ForgetPWdView, RegisterView, ActiveUserView, ResetPwdView, ModifyPwdView
-from organization.views import OrgView
 from Mkonline.settings import MEDIA_ROOT
+from operations.views import IndexView
 
 
 urlpatterns = [
@@ -34,11 +34,10 @@ urlpatterns = [
     path('captcha/', include('captcha.urls')),
 
     # 配置上传文件的URL访问路径
-    # url(r'^media/(?P<path>.*)$', serve, {"document_root": MEDIA_ROOT}),
     re_path(r'^media/(?P<path>.*)$', serve, {"document_root": MEDIA_ROOT}),
 
     # User Register  process control:
-    path('', TemplateView.as_view(template_name='index.html'), name="index"),
+    path('', IndexView.as_view(), name="index"),
     path('login/', LoginView.as_view(), name="login"),
     path('logout/', LogoutView.as_view(), name="logout"),
     path('register/', RegisterView.as_view(), name="register"),

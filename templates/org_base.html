@@ -50,7 +50,10 @@
                             </div>
                         </div>
                 </div>
-			</div>
+                        <a href="{% url 'users:mymessages' %}">
+                            <div class="msg-num"><span id="MsgNum">{{ unread_nums }}</span></div>
+                </a>
+                        </div>
                     {% else %}
                             <div class="top">
 				<div class="wp">

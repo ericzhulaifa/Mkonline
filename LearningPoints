@@ -61,6 +61,15 @@ How To:
     {% for my_course in user.usercourses_set.all %}
     usercenter-mycourse.html
 
-12.
-
-
+12. 如何注入一个全局变量 - 用户消息未读数量
+    第一种方法：
+        在用户的model中增加计算消息未读数量的函数， 然后在各个template中使用
+            定义： users.models.UserProfile.unread_nums  - line: 47
+            使用： users.unread_nums (usercenter-base.html line:53)
+    第二种方法：
+        1. 在用户的views中定义一个方法。
+            users.views.message_nums
+        2. 在项目的setting的上下文处理器中注册这个方法，然后可以在整个项目中使用
+            Mkonline.settings.TEMPLATES
+        3. 在template中使用，示例
+            usercenter-base.html line: 53
