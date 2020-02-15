@@ -7,6 +7,7 @@
         4.3 UserFavorite        用户收藏
         4.4 UserMessage         用户消息
         4.5 UserCourse          用户学习课程
+        4.6 Banner                  轮播图
 """
 
 from datetime import datetime
@@ -23,6 +24,22 @@ from users.models import UserProfile
 
 # User_Profile = get_user_model()                     # 实例话这个方法
 
+
+class Banner(BaseModel):
+    """
+    4.6 Banner                  轮播图
+    """
+    title = models.CharField(max_length=100, verbose_name=u"标题")
+    image = models.ImageField(upload_to="banner/%Y/%m", max_length=200, verbose_name=u"轮播图")
+    url = models.URLField(max_length=200, verbose_name=u"访问地址")
+    index = models.IntegerField(default=100, verbose_name=u"播放顺序")
+
+    class Meta:
+        verbose_name = u"轮播图"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.title
 
 class UserAsk(BaseModel):
     """
