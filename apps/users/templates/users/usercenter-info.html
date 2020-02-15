@@ -1,4 +1,4 @@
-{% extends 'usercenter-base.html' %}
+{% extends 'users/usercenter-base.html' %}
 
 {% block title %}个人信息- 慕学在线网{% endblock %}
 
@@ -28,7 +28,7 @@
                     <form class="clearfix" id="jsAvatarForm" enctype="multipart/form-data" autocomplete="off" method="post" action="{% url 'users:image_upload' %}" target='frameFile'>
                         <label class="changearea" for="avatarUp">
                             <span id="avatardiv" class="pic">
-                                <img width="100" height="100" class="js-img-show" id="avatarShow" src="{% static 'media/image/2016/12/default_big_14.png' %}"/>
+                                <img width="100" height="100" class="js-img-show" id="avatarShow" src="{{user.image.url}}"/>
                             </span>
                             <span class="fl upload-inp-box" style="margin-left:70px;">
                                 <span class="button btn-green btn-w100" id="jsAvatarBtn">修改头像</span>
@@ -48,7 +48,7 @@
                             <i class="error-tips"></i>
                         </li>
 						<li>生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日：
-                           <input type="text" id="birth_day" name="birday" value="{{ user.birthday | default_if_none:'' | date:'Y-m-d'}}" readonly="readonly"/>
+                           <input type="text" id="birth_day" name="birthday" value="{{ user.birthday | default_if_none:'' | date:'Y-m-d'}}" readonly="readonly"/>
                             <i class="error-tips"></i>
 						</li>
 						<li>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：
@@ -65,8 +65,10 @@
                         </li>
 						<li class="button heibtn">
 							<input type="button" id="jsEditUserBtn" value="保存">
+{#                            # find jsEditUserBtn in static/js/deco-user.js#}
 						</li>
 					</ul>
+                {% csrf_token %}
 				</form>
 			</div>
 		</div>

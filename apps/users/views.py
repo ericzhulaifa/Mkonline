@@ -10,8 +10,124 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from users.models import UserProfile, EmailVerifyRecord
 from .forms import LoginForm, ForgetPwdForm, RegisterForm, ModifyPwdForm, DynamicLoginForm, UploadImageForm
+from .forms import UserInfoForm, ChangePwdForm
 from utils.email_send import send_register_email
-# Create your views here.
+from apps.operations.models import UserFavorite
+from apps.organization.models import CourseOrg, Teacher
+from apps.courses.models import Course
+
+
+class MyMessagesView(LoginRequiredMixin, View):
+    login_url = "/login"
+
+    def get(self, request, *args, **kwargs):
+        current_page = "mymessages"
+
+        return render(request, "users/usercenter-message.html", {
+            "current_page": current_page,
+        })
+
+
+class MyFavCourseView(LoginRequiredMixin, View):
+    login_url = "/login"
+
+    def get(self, request, *args, **kwargs):
+        current_page = "myfav"
+        current_fav_page = "mycourse"
+        course_list = []
+        fav_courses = UserFavorite.objects.filter(user=request.user, fav_type=1)
+        for fav_course in fav_courses:
+            try:
+                course = Course.objects.get(id=fav_course.fav_id)
+                course_list.append(course)
+            except Course.DoesNotExist as e:
+                pass
+
+        return render(request, "users/usercenter-fav-course.html", {
+            "current_page": current_page,
+            "current_fav_page": current_fav_page,
+            "course_list": course_list,
+        })
+
+
+class MyFavTeacherView(LoginRequiredMixin, View):
+    login_url = "/login"
+
+    def get(self, request, *args, **kwargs):
+        current_page = "myfav"
+        current_fav_page = "myteacher"
+        teacher_list = []
+        fav_teachers = UserFavorite.objects.filter(user=request.user, fav_type=3)
+        for fav_teacher in fav_teachers:
+            try:
+                teacher = Teacher.objects.get(id=fav_teacher.fav_id)
+                teacher_list.append(teacher)
+            except Teacher.DoesNotExist as e:
+                pass
+
+        return render(request, "users/usercenter-fav-teacher.html", {
+            "current_page": current_page,
+            "current_fav_page": current_fav_page,
+            "teacher_list": teacher_list,
+        })
+
+
+class MyFavOrgView(LoginRequiredMixin, View):
+    login_url = "/login"
+
+    def get(self, request, *args, **kwargs):
+        current_page = "myfav"
+        current_fav_page = "myorg"
+        org_list = []
+        fav_orgs = UserFavorite.objects.filter(user=request.user, fav_type=2)
+        for fav_org in fav_orgs:
+            try:
+                org = CourseOrg.objects.get(id=fav_org.fav_id)
+                org_list.append(org)
+            except CourseOrg.DoesNotExist as e:
+                pass
+
+        return render(request, "users/usercenter-fav-org.html", {
+            "current_page": current_page,
+            "current_fav_page": current_fav_page,
+            "org_list": org_list,
+        })
+
+
+class MyCourseView(LoginRequiredMixin, View):
+    login_url = "/login"
+
+    def get(self, request, *args, **kwargs):
+        current_page = "mycourse"
+        return render(request, "users/usercenter-mycourse.html", {
+            "current_page": current_page,
+        })
+
+
+class ChangePwdView(LoginRequiredMixin, View):
+    login_url = "/login/"
+    def post(self, request, *args, **kwargs):
+        pwd_form = ChangePwdForm(request.POST)
+        if pwd_form.is_valid():
+            # pwd1 = request.POST.get("password1", "")
+            # pwd2 = request.POST.get("password2", "")
+            #
+            # if pwd1 != pwd2:
+            #     return JsonResponse({
+            #         "status": "fail",
+            #         "msg": "密码不一致"
+            #     })
+            pwd1 = request.POST.get("password1", "")
+            user = request.user
+            user.set_password(pwd1)
+            user.save()
+            # login(request, user)     # 避免修改密码后重新登录
+
+            return JsonResponse({
+                "status": "success"
+            })
+        else:
+            return JsonResponse(pwd_form.errors)
 
 
 class UploadImageView(LoginRequiredMixin, View):
@@ -19,7 +135,7 @@ class UploadImageView(LoginRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
         # 处理用户上传的头像
-        image_form = UploadImageForm(request.POST, request.FILES, isinstance=request.user)
+        image_form = UploadImageForm(request.POST, request.FILES, instance=request.user)
         if image_form.is_valid():
             image_form.save()
             return JsonResponse({
@@ -29,14 +145,26 @@ class UploadImageView(LoginRequiredMixin, View):
             return JsonResponse({
                 "status": "fail"
             })
-        pass
 
 
 class UserInfoView(LoginRequiredMixin, View):
     login_url = "/login"
 
     def get(self, request, *args, **kwargs):
-        return render(request, "usercenter-info.html")
+        current_page = "myinfo"
+        return render(request, "users/usercenter-info.html", {
+          "current_page": current_page
+        })
+
+    def post(self, request, *args, **kwargs):
+        user_info_form = UserInfoForm(request.POST, instance=request.user)
+        if user_info_form.is_valid():
+            user_info_form.save()
+            return JsonResponse({
+                "status": "success"
+            })
+        else:
+            return JsonResponse(user_info_form.errors, {})
 
 
 class LogoutView(View):

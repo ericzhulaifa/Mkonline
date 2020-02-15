@@ -57,7 +57,7 @@ urlpatterns = [
     path('op/', include('operations.urls', namespace='op')),
 
     # 用户个人中心
-    path('users/', include('users.urls')),
+    path('users/', include('users.urls', namespace='users')),
 
 
 ]

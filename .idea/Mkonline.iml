@@ -28,6 +28,7 @@
         <option value="$MODULE_DIR$/templates" />
         <option value="$MODULE_DIR$/apps/courses/templates" />
         <option value="$MODULE_DIR$/apps/organization/templates" />
+        <option value="$MODULE_DIR$/apps/users/templates" />
       </list>
     </option>
   </component>

@@ -45,3 +45,22 @@ How To:
        <dl class="des">
        <span class="num fl">{{ forloop.counter }}</span>
 
+8. 在template中根据页面设计需求，对过滤器的用法
+    usercenter-info.html,
+    <input type="text" name="nick_name" id="nick_name" value="{{ user.nick_name | default_if_none:''}}" maxlength="10">
+
+9. 如何对日期显示进行格式化
+    usercenter-info.html,
+    <input type="text" id="birth_day" name="birday" value="{{ user.birthday | default_if_none:'' | date:'Y-m-d'}}" readonly="readonly"/>
+
+10. 关于头像照片上传的问题， 如何处理前端用户修改头像字段
+    usercenter-info.html,
+    users.views.py - UploadImageView(View)
+
+11. 利用用户自带变量进行数据反向取值的实例
+    {% for my_course in user.usercourses_set.all %}
+    usercenter-mycourse.html
+
+12.
+
+
