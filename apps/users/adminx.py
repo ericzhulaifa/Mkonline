@@ -4,8 +4,7 @@ __date__ = '2020/2/1 5:34 下午'
 
 import xadmin
 
-from users.models import UserProfile, EmailVerifyRecord, Banner
-
+from users.models import EmailVerifyRecord
 
 class UserProfileAdmin(object):
     list_display = ['username', 'nick_name', 'first_name', 'last_name', 'gender',
@@ -33,14 +32,5 @@ class EmailVerifyRecordAdmin(object):
     empty_value_display = '-???-'
 
 
-class BannerAdmin(object):
-    list_display = ['title', 'image', 'url', 'index', 'add_time']
-    search_fields = ['title', 'image', 'url', 'index']
-    list_filter = ['title', 'image', 'url', 'index', 'add_time']
-    list_editable = ['title', 'image', 'url', 'index']
-    readonly_fields = ('add_time',)
-    empty_value_display = '-???-'
-
-
 xadmin.site.register(EmailVerifyRecord, EmailVerifyRecordAdmin)
-xadmin.site.register(Banner, BannerAdmin)
+

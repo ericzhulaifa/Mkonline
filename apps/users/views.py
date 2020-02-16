@@ -14,9 +14,12 @@ from users.models import UserProfile, EmailVerifyRecord
 from .forms import LoginForm, ForgetPwdForm, RegisterForm, ModifyPwdForm, DynamicLoginForm, UploadImageForm
 from .forms import UserInfoForm, ChangePwdForm
 from utils.email_send import send_register_email
-from apps.operations.models import UserFavorite, UserMessage
+from apps.operations.models import UserFavorite, UserMessage, Banner
 from apps.organization.models import CourseOrg, Teacher
 from apps.courses.models import Course
+
+
+
 
 
 def message_nums(request):
@@ -258,6 +261,16 @@ class ActiveUserView(View):
         return render(request, "login.html")
 
 
+class CustomAuth(ModelBackend):
+    def authenticate(self, request, username=None, password=None, **kwargs):
+        try:
+            user = UserProfile.objects.get(Q(username=username) | Q(mobile=username))
+            if user.check_password(password):
+                return user
+        except Exception as e:
+            return None
+
+
 class CustomBackend(ModelBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
         try:
@@ -303,15 +316,18 @@ class LoginView(View):
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return HttpResponseRedirect(reverse("index"))
+        all_banner = Banner.objects.all().order_by("-add_time")[:3]
         next = request.GET.get("next", "")
         login_form = DynamicLoginForm()
         return render(request, "login.html", {
             "login_form": login_form,
             "next": next,
+            "all_banner": all_banner
             })
 
     def post(self, request, *args, **kwargs):
         login_form = LoginForm(request.POST)    # 是Dict字典类型
+        all_banner = Banner.objects.all().order_by("-add_time")[:3]
         if login_form.is_valid():
             user_name = login_form.cleaned_data["username"]
             pass_word = login_form.cleaned_data["password"]
@@ -325,8 +341,8 @@ class LoginView(View):
                         return HttpResponseRedirect(next)
                     return HttpResponseRedirect(reverse("index"))
                 else:
-                    return render(request, 'login.html', {"msg": "用户未激活！"})
+                    return render(request, 'login.html', {"msg": "用户未激活！", "all_banner": all_banner})
             else:
-                return render(request, 'login.html', {"msg": "用户名或密码错误！", "long_form": login_form})
+                return render(request, 'login.html', {"msg": "用户名或密码错误！", "long_form": login_form, "all_banner": all_banner})
         else:
-            return render(request, 'login.html', {"login_form": login_form})
+            return render(request, 'login.html', {"login_form": login_form, "all_banner": all_banner})

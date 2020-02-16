@@ -84,10 +84,12 @@ class CourseOrg(BaseModel):
         return self.name        # 必须是必填项字段
 
 
+from apps.users.models import UserProfile
 class Teacher(BaseModel):
     """
     2.3 Teacher                教师基本信息
     """
+    user = models.OneToOneField(UserProfile, on_delete=models.SET_NULL, null=True, blank=True, verbose_name=u"系统用户")
     org = models.ForeignKey(CourseOrg, on_delete=models.CASCADE, verbose_name=u"所属机构")
     name = models.CharField(max_length=50, verbose_name=u"教师名")
     work_years = models.IntegerField(default=0, verbose_name=u"工作年限")

@@ -7,6 +7,8 @@ import xadmin
 
 from apps.courses.models import Course, Lesson, Video, CourseResource, CourseTag
 
+from xadmin.layout import Fieldset, Main, Side, Row
+
 
 class GlobalSettings(object):
     site_title = "幕学后台管理系统"
@@ -29,6 +31,54 @@ class CourseAdmin(object):
     list_editable = ['teacher', 'name', 'desc', 'detail', 'degree', 'learn_times', 'teacher', 'students']
     readonly_fields = ('add_time',)
     empty_value_display = '-???-'
+
+
+class NewCourseAdmin(object):
+    list_display = ['name', 'desc', 'detail', 'degree', 'learn_times', 'teacher', 'students', 'fav_nums',
+                    'image', 'click_nums', 'add_time']
+    search_fields = ['teacher', 'name', 'desc', 'detail', 'degree', 'learn_times', 'students', 'fav_nums',
+                     'image', 'click_nums']
+    list_filter = ['name', 'desc', 'detail', 'degree', 'learn_times', 'teacher__name', 'students', 'fav_nums',
+                   'image', 'click_nums', 'add_time']
+    list_editable = ['teacher', 'name', 'desc', 'detail', 'degree', 'learn_times', 'teacher', 'students']
+    readonly_fields = ('add_time',)
+    empty_value_display = '-???-'
+
+    # 如何按照数据来过滤用户 - 用户只看到属于他自己的数据
+    def queryset(self):
+        qs = super().queryset()
+        if not self.request.user.is_superuser:
+            qs = qs.filter(teacher=self.request.user)
+        return qs
+
+
+    def get_form_layout(self):
+        if self.org_obj:
+            self.form_layout = (
+                Main(
+                    Fieldset("讲师信息",
+                            'teacher', 'course_org',
+                             css_class='unsort no_title'
+                           ),
+                    Fieldset("基本信息",
+                            'name', 'desc',
+                            Row('learn_times', 'degree'),
+                            Row('category', 'tag'),
+                            'youneed_know', 'teacher_tell', 'detail',
+                            ),
+                ),
+                Side(
+                    Fieldset("访问信息",
+                             'fav_nums', 'click_nums', 'students', 'add_time'
+                             ),
+                ),
+                Side(
+                    Fieldset("选择信息",
+                             'is_banner', 'is_classics'
+                             ),
+                )
+            )
+        return super(NewCourseAdmin, self).get_form_layout()
 
 
 class LessonAdmin(object):
@@ -65,7 +115,9 @@ class CourseTagAdmin(object):
     list_filter = ['course', 'tag', 'add_time']
 
 
-xadmin.site.register(Course, CourseAdmin)
+# xadmin.site.register(Course, CourseAdmin)
+xadmin.site.register(Course, NewCourseAdmin)
+
 xadmin.site.register(Lesson, LessonAdmin)
 xadmin.site.register(Video, VideoAdmin)
 xadmin.site.register(CourseResource, CourseResourceAdmin)

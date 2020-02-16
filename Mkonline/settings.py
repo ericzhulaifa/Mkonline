@@ -25,10 +25,13 @@ SECRET_KEY = '^wo_e*x_h9ll2jzg#a1hl4a%l3bs*tgh^(jf5=j&-m$35dh44y'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
+AUTHENTICATION_BACKENDS = [
+    "apps.users.views.CustomAuth",
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -152,6 +155,7 @@ EMAIL_FROM = "coachingabc@sina.com"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static') # only used in Production environment.
 
 # 分页功能django-pure-pagination相关设置
 PAGINATION_SETTINGS = {

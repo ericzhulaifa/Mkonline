@@ -3,7 +3,7 @@
     1-用户主数据，基本底层数据表
         1.1 UserProfile             用户信息
         1.2 EmailVerifyRecord       邮箱验证信息
-        1.3 Banner                  轮播图
+        # 1.3 Banner                  轮播图
 """
 
 from datetime import datetime
@@ -74,18 +74,18 @@ class EmailVerifyRecord(models.Model):
         return '{0}({1})'.format(self.code, self.email)
 
 
-class Banner(BaseModel):
-    """
-    1.3 Banner                  轮播图
-    """
-    title = models.CharField(max_length=100, verbose_name=u"标题")
-    image = models.ImageField(upload_to="banner/%Y/%m", verbose_name=u"轮播图", max_length=100)
-    url = models.URLField(max_length=200, verbose_name=u"访问地址")
-    index = models.IntegerField(default=100, verbose_name=u"播放顺序")
-
-    class Meta:
-        verbose_name = u"轮播图"
-        verbose_name_plural = verbose_name
-
-    def __str__(self):
-        return self.title
+# class Banner(BaseModel):
+#     """
+#     1.3 Banner                  轮播图
+#     """
+#     title = models.CharField(max_length=100, verbose_name=u"标题")
+#     image = models.ImageField(upload_to="banner/%Y/%m", verbose_name=u"轮播图", max_length=100)
+#     url = models.URLField(max_length=200, verbose_name=u"访问地址")
+#     index = models.IntegerField(default=100, verbose_name=u"播放顺序")
+#
+#     class Meta:
+#         verbose_name = u"轮播图"
+#         verbose_name_plural = verbose_name
+#
+#     def __str__(self):
+#         return self.title

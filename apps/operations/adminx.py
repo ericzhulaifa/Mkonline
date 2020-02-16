@@ -4,7 +4,7 @@ __date__ = '2020/2/1 5:34 下午'
 
 import xadmin
 
-from apps.operations.models import UserAsk, CourseComments, UserFavorite, UserMessage, UserCourses
+from apps.operations.models import UserAsk, CourseComments, UserFavorite, UserMessage, UserCourses, Banner
 
 
 class UserAskAdmin(object):
@@ -52,8 +52,21 @@ class UserCoursesAdmin(object):
     empty_value_display = '-???-'
 
 
+class BannerAdmin(object):
+    list_display = ['title', 'image', 'url', 'index', 'add_time']
+    search_fields = ['title', 'image', 'url', 'index']
+    list_filter = ['title', 'image', 'url', 'index', 'add_time']
+    list_editable = ['title', 'image', 'url', 'index']
+    readonly_fields = ('add_time',)
+    empty_value_display = '-???-'
+
+
 xadmin.site.register(UserAsk, UserAskAdmin)
 xadmin.site.register(CourseComments, CourseCommentsAdmin)
 xadmin.site.register(UserFavorite, UserFavoriteAdmin)
 xadmin.site.register(UserMessage, UserMessageAdmin)
 xadmin.site.register(UserCourses, UserCoursesAdmin)
+xadmin.site.register(Banner, BannerAdmin)
+
+
+

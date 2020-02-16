@@ -73,3 +73,13 @@ How To:
             Mkonline.settings.TEMPLATES
         3. 在template中使用，示例
             usercenter-base.html line: 53
+
+13. 如何扩展xadmin的功能，实现后台显示页面的更灵活布局和管理
+    以课程管理为例，重载Xadmin的方法
+    courses.adminx.py NewCourseAdmin.Get_Form_Layout
+
+14. 如何实现让老师可以自己在后台管理自己的课程？
+    14.1 修改UserProfile的结构
+
+    14.2 在XadminModel注册中进行数据过滤
+

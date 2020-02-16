@@ -32,7 +32,7 @@ class Banner(BaseModel):
     title = models.CharField(max_length=100, verbose_name=u"标题")
     image = models.ImageField(upload_to="banner/%Y/%m", max_length=200, verbose_name=u"轮播图")
     url = models.URLField(max_length=200, verbose_name=u"访问地址")
-    index = models.IntegerField(default=100, verbose_name=u"播放顺序")
+    index = models.IntegerField(default=0, verbose_name=u"播放顺序")
 
     class Meta:
         verbose_name = u"轮播图"

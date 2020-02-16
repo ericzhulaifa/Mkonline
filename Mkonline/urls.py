@@ -24,6 +24,8 @@ import xadmin
 
 from users.views import LoginView, LogoutView, ForgetPWdView, RegisterView, ActiveUserView, ResetPwdView, ModifyPwdView
 from Mkonline.settings import MEDIA_ROOT
+# from Mkonline.settings import STATIC_ROOT
+
 from operations.views import IndexView
 
 
@@ -35,6 +37,7 @@ urlpatterns = [
 
     # 配置上传文件的URL访问路径
     re_path(r'^media/(?P<path>.*)$', serve, {"document_root": MEDIA_ROOT}),
+    # re_path(r'^static/(?P<path>.*)$', serve, {"document_root": STATIC_ROOT}),
 
     # User Register  process control:
     path('', IndexView.as_view(), name="index"),
